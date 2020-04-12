@@ -7,7 +7,7 @@ const todoSchema = new mongoose.Schema({
     description : String,
     isCompleted : { type:Boolean, default:false},
     createdDate : { type:Date, default:Date.now},
-    assign : {type:String, required:true}
+    assign : {type:String, required:true},
 });
 
 
