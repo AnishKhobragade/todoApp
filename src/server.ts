@@ -2,7 +2,7 @@ import express from "express"
 import bodyParser from "body-parser"
 import { DB } from "./db"
 import {Routes} from "./route"
-
+import cors from "cors"
 
 class TodoApp
 {
@@ -17,6 +17,8 @@ class TodoApp
         });
 
         DB.ConnectMongoDB();
+
+        this.app.use(cors());
 
         this.configBodyParser();
 
