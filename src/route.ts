@@ -1,8 +1,7 @@
 
 import express from "express"
 import {TodoService} from "./todoService"
-import { todoModel } from "todoModel";
-
+import {UserService} from "./userService"
 export class Routes
 {
     constructor(){}
@@ -26,6 +25,19 @@ export class Routes
         app.put("/todo/:todoId", TodoService.UpdateTodo);
 
         app.delete("/todo/:todoId", TodoService.DeleteTodo);
+
+
+        app.post("/createUser", UserService.CreateUser)
+        app.get("/getAllUser", UserService.GetUser);
+
+        app.get('/getUser', UserService.GetUserQuery);
+
+        app.get("/user/:userId", UserService.FindUserById);
+
+        app.put("/user/:userId", UserService.UpdateUser);
+
+        app.delete("/user/:userId", UserService.DeleteUser);
+    
 
 
     }

@@ -29,7 +29,7 @@ export class TodoService
     public static async GetAllTodos(req:express.Request, res: express.Response)
     {
         try{
-            let allTodos = await todoModel.find({}).sort("name");;
+            let allTodos = await todoModel.find({}).populate("assign")
             res.json(allTodos)
         }
         catch(err)
