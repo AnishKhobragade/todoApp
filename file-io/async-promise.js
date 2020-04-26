@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var fs = require("fs");
+var util = require("util");
 var flag = false;
 var promiseObj = new Promise(function (resolve, reject) {
     //perform any async operation
@@ -30,7 +31,7 @@ promiseObj.then(function (data) {
 });
 function ReadFile() {
     var promiseObj = new Promise(function (resolve, reject) {
-        fs.readFile("./test3.txt", "utf-8", function (err, data) {
+        fs.readFile("./test1.txt", "utf-8", function (err, data) {
             if (err) {
                 reject(err);
             }
@@ -41,8 +42,13 @@ function ReadFile() {
     });
     return promiseObj;
 }
+function WriteFile() {
+    var promise2 = util.promisify(fs.writeFile);
+    return promise2('./test4.txt', "Hello, WOrld");
+}
 function fileOp() {
     console.log("File OP start");
+    //Read file
     var promise1 = ReadFile();
     promise1.then(function (data) {
         console.log(data);
@@ -50,7 +56,15 @@ function fileOp() {
     })["catch"](function (err) {
         console.log(err);
     });
+    //Write to File
+    var writeFilePromise = WriteFile();
+    writeFilePromise.then(function () {
+        console.log("Write Op done");
+    })["catch"](function (err) {
+        console.log("Error occure while Write OP");
+        console.log(err);
+    });
     console.log("file OP done");
-    console.log(promise1);
 }
 fileOp();
+//Promise Chaining => Readability to remove the Callback hell problem
