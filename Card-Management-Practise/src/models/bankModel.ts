@@ -11,7 +11,9 @@ const BankSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    Active: { type: Boolean, default: false }
+    Active: { type: Boolean, default: false },
+    bankManager: { type: Schema.Types.ObjectId, required: true, ref: 'user' },
+
 });
 
 export const bankModel = mongoose.model("bank", BankSchema);

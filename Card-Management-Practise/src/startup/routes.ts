@@ -1,6 +1,8 @@
 
 import express from "express"
 import {bankRoutes} from './../routes/bankRoutes'
+import {cardRoutes} from './../routes/cardRoutes'
+import {userRoutes} from './../routes/userRoutes'
 
 export class Routes
 {
@@ -13,5 +15,7 @@ export class Routes
         });
 
         app.use("/api/bank", bankRoutes);
+        app.use("/api/user", userRoutes);
+        app.use("/api/card", cardRoutes);
     }
 }
