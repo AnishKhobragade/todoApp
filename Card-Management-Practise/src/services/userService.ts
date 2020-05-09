@@ -1,5 +1,8 @@
 import { userModel } from "./../models/userModel"
 import bcrypt from "bcrypt"
+import * as jwt from "jsonwebtoken"
+import fs from "fs"
+import path from "path"
 
 export class UserService{
 
@@ -35,10 +38,35 @@ export class UserService{
             return {'message': "Wrong password, please try again"};
         }
 
-        return {'message': "login success", 'data': user};
+        //user login sucess..generate json web token
+        let privateKey = "";
+        let filePath = path.join(path.resolve('.'), '/src/utils/private.key');
+        try{
+            privateKey = fs.readFileSync(filePath).toString();
+        }
+        catch(err)
+        {
+            console.log(err);
+        }
+        
+
+        let payload = {
+            "name":user.Name,
+            "email":user.email,
+            "userId":user._id
+        };
+
+        const secret = "mysecretkey";
+
+        let option : jwt.SignOptions = {
+            algorithm:"RS512",
+            expiresIn:"4h"
+        }
+
+        let token = await jwt.sign(payload,privateKey, option);
+
+        return {'message': "login success", 'token': token};
     }
-
-
 
      public static async getAllUsers(){
         try {

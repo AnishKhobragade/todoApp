@@ -12,7 +12,7 @@ export class BankService{
         }
     }
 
-     public static async getAllBanks(){
+     public static async getAllBanks(req:any){
         try {
             let banks =  await bankModel.find().exec();
             return banks;

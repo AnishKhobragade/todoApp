@@ -10,7 +10,7 @@ export class BankController {
     }
 
     public  async getAllBanks(req: Request, res: Response) {
-        let data =   await BankService.getAllBanks();
+        let data =   await BankService.getAllBanks(req);
         return res.json(data);
     }
 

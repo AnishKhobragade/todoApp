@@ -2,6 +2,7 @@ import express from "express"
 import bodyParser from "body-parser"
 import { DB } from "./startup/db"
 import {Routes} from "./startup/routes"
+import { AuthenticateService } from "./middleware/authenticateService"
 
 class CardApp
 {
@@ -18,6 +19,8 @@ class CardApp
         DB.ConnectMongoDB();
 
         this.configBodyParser();
+
+        this.app.use(AuthenticateService.authenticate);
 
         Routes.RegisterAPIs(this.app);
        
