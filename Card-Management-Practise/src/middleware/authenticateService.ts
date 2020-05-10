@@ -10,13 +10,20 @@ export class AuthenticateService
         //read token from authorization header
 
         let token :any = req.header("Authorization");
+
+        if(!token)
+        {
+            return res.json("Access denied");
+        }
+
         let option : jwt.VerifyOptions = {
             algorithms:["RS512"]
         }
-        let filePath = path.join(path.resolve('.'), '/src/utils/public.key');
+        let filePath = path.join(path.resolve('.'), '/src/cert/public.key');
         const publicKey = fs.readFileSync(filePath).toString();
         try {
 
+            //result is same as payload object during token creation
             let result = jwt.verify(token,publicKey,option);
             req.user = result;
 
@@ -24,7 +31,7 @@ export class AuthenticateService
             next();
         } catch (error) {
             console.log(error);
-            res.json("Access denied");
+            res.json("Access denied, Bad request");
         }
 
     }

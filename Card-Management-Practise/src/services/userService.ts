@@ -3,6 +3,7 @@ import bcrypt from "bcrypt"
 import * as jwt from "jsonwebtoken"
 import fs from "fs"
 import path from "path"
+import { ResponseService} from "./../utils/responseService"
 
 export class UserService{
 
@@ -26,7 +27,7 @@ export class UserService{
 
         if(!user)
         {
-            return {'message': `user not registered with email ${req.body.email}`};
+            return ResponseService.getInValidResponse({'message': `user not registered with email ${req.body.email}`});
         }
 
         //Check  for password match
@@ -35,12 +36,12 @@ export class UserService{
 
         if(!isPasswordMatched)
         {
-            return {'message': "Wrong password, please try again"};
+            return ResponseService.getInValidResponse({'message': "Wrong password, please try again"});
         }
 
         //user login sucess..generate json web token
         let privateKey = "";
-        let filePath = path.join(path.resolve('.'), '/src/utils/private.key');
+        let filePath = path.join(path.resolve('.'), '/src/cert/private.key');
         try{
             privateKey = fs.readFileSync(filePath).toString();
         }
@@ -65,7 +66,7 @@ export class UserService{
 
         let token = await jwt.sign(payload,privateKey, option);
 
-        return {'message': "login success", 'token': token};
+        return ResponseService.getValidResponse({'message': "login success", 'token': token});
     }
 
      public static async getAllUsers(){

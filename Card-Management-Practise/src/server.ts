@@ -20,7 +20,9 @@ class CardApp
 
         this.configBodyParser();
 
-        this.app.use(AuthenticateService.authenticate);
+        //Applied Authentication on App level=> All API
+        //Call will get authenticated (check for token verification)
+        //this.app.use(AuthenticateService.authenticate);
 
         Routes.RegisterAPIs(this.app);
        
