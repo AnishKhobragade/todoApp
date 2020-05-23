@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { UserService } from './../services/userService'
+import {AuthorizationService} from './../middleware/authorizationService'
+import { Permission } from './../dataTransferModel/permission';
 
 
 export class UserController {
@@ -14,9 +16,16 @@ export class UserController {
         return res.send(response);
     }
 
-    public  async getAllUsers(req: Request, res: Response) {
-        let data =   await UserService.getAllUsers();
-        return res.json(data);
+    public  async getAllUsers(req: any, res: Response) {
+
+        let isPermission = AuthorizationService.hasPermission(req.user.role, Permission.GetAllUser);
+        if(isPermission)
+        {
+            let data =   await UserService.getAllUsers();
+            return res.json(data);
+        }
+        return res.status(401).json("Access denied, You dont have permission")
+       
     }
 
     public async getUserWithID(req: Request, res: Response) {

@@ -54,7 +54,8 @@ export class UserService{
         let payload = {
             "name":user.Name,
             "email":user.email,
-            "userId":user._id
+            "userId":user._id,
+            "role":user.role
         };
 
         const secret = "mysecretkey";

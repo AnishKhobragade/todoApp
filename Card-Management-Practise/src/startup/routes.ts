@@ -5,6 +5,7 @@ import {cardRoutes} from './../routes/cardRoutes'
 import {userRoutes} from './../routes/userRoutes'
 import { AuthenticateService } from "./../middleware/authenticateService";
 import {UserController} from "./../controllers/userController"
+import { AuthorizationService } from "./../middleware/authorizationService";
 const userController = new UserController();
 
 export class Routes
@@ -23,10 +24,12 @@ export class Routes
         app.post('/login', userController.login);
 
         //Apply Authentication for All Below API's
+       
+
+        app.use("/api/bank", AuthenticateService.authenticate,AuthorizationService.Authorize, bankRoutes);
+        
         app.use(AuthenticateService.authenticate);
 
-        app.use("/api/bank",bankRoutes);
-        
         app.use("/api/user", userRoutes);
 
         app.use("/api/card",cardRoutes);

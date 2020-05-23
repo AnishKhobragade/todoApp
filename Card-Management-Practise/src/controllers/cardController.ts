@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { CardService } from './../services/cardService'
-
+import { AuthorizationService } from './../middleware/authorizationService'
+import { Permission } from './../dataTransferModel/permission';
 
 export class CardController {
 
@@ -9,9 +10,15 @@ export class CardController {
         return res.send(response);
     }
 
-    public  async getAllCards(req: Request, res: Response) {
-        let data =   await CardService.getAllCards();
-        return res.json(data);
+    public async getAllCards(req: any, res: Response) {
+        let isPermission = AuthorizationService.hasPermission(req.user.role, Permission.GetAllCard);
+        if (isPermission) {
+            let data = await CardService.getAllCards();
+            return res.json(data);
+        }
+        return res.status(401).json("Access denied, You dont have permission")
+
+
     }
 
     public async getCardWithID(req: Request, res: Response) {
